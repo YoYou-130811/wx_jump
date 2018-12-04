@@ -14,6 +14,11 @@ public class RankController {
     @Autowired
     RankService rankService;
 
+    /**
+     * 获取排行榜信息
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "/getRankList")
     public List<RankBean> selectData() throws Exception {
         return rankService.selectData();

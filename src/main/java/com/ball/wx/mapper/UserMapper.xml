@@ -26,7 +26,13 @@
     </select>
 
     <update id="updateUser" parameterType="com.ball.wx.bean.LoginBean">
-        update user set nickname = #{nickName}, headimg = #{headImg}, gender = #{gender} where userid = #{userId}
+        update user
+        <trim prefix="set" suffixOverrides="," suffix="where userid = #{userId}">
+            <if test="session_key != null">session_key = #{session_key},</if>
+            <if test="nickName != null">nickname = #{nickName},</if>
+            <if test="headImg != null">headimg = #{headImg},</if>
+            <if test="gender != null">gender = #{gender},</if>
+        </trim>
     </update>
 
     <delete id="deleteAllUsers">

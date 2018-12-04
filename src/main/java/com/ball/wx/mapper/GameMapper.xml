@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ball.wx.mapper.UserMapper">
+<mapper namespace="com.ball.wx.mapper.GameMapper">
 
     <!-- 自定义返回结果集 -->
     <!--<resultMap id="userMap" type="UserBean">-->
@@ -13,30 +13,12 @@
                 方法来取出由数据（比如：像 MySQL 和 SQLServer 这样的数据库管理系统的自动递增字段）内部生成的主键。默认值： false。 -->
     <!--keyProperty： （仅对 insert有用）标记一个属性， MyBatis 会通过 getGeneratedKeys或者通过 insert 语句的 selectKey 子元素设置它的值。默认：不设置。 -->
     <!--#{}中的内容，为占位符，当参数为某个JavaBean时，表示放置该Bean对象的属性值  -->
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
-        insert into user (openid, session_key, topscore) values (#{openid}, #{session_key}, 0)
-    </insert>
-
-    <select id="selectUserByOpenId" parameterType="java.lang.String" resultType="com.ball.wx.bean.LoginBean">
-        select * from user where openid = #{openid}
-    </select>
-
-    <select id="selectUserByUserId" parameterType="Integer" resultType="com.ball.wx.bean.LoginBean">
-        select * from user where userid = #{userid}
-    </select>
-
-    <update id="updateUser" parameterType="com.ball.wx.bean.LoginBean">
-        update user
-        <trim prefix="set" suffixOverrides="," suffix="where userid = #{userId}">
-            <if test="session_key != null">session_key = #{session_key},</if>
-            <if test="nickName != null">nickname = #{nickName},</if>
-            <if test="headImg != null">headimg = #{headImg},</if>
-            <if test="gender != null">gender = #{gender},</if>
-        </trim>
+    <update id="setTopScore" parameterType="com.ball.wx.bean.LoginBean">
+        update user set topscore = #{topScore} where userid = #{userId}
     </update>
 
-    <delete id="deleteAllUsers">
-        truncate table user
-    </delete>
+    <select id="getUserScore" resultType="com.ball.wx.bean.LoginBean">
+        select * from user where userid = #{userid}
+    </select>
 
 </mapper>

@@ -15,13 +15,11 @@ public class RankServiceImpl implements RankService {
 
     @Override
     public void insertData() throws Exception {
-        System.err.println(123);
         rankMapper.insertData();
     }
 
     @Override
     public void deleteData() throws Exception {
-        System.err.println(321);
         rankMapper.deleteData();
     }
 

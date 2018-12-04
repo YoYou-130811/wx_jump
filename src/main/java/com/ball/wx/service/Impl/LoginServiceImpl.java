@@ -23,8 +23,23 @@ public class LoginServiceImpl implements LoginService {
         String url = CommonValue.GET_USER_DATA_URL_HEAD + result + CommonValue.GET_USER_DATA_URL_END;
         String data = HttpUtil.doPost(url, "");
         JSONObject jsonObject = JSONObject.parseObject(data);
-        if (ObjectUtil.isNotNull(userMapper.selectUserByOpenId(jsonObject.get("openid").toString()))) {
-            return userMapper.selectUserByOpenId(jsonObject.get("openid").toString());
+        LoginBean _loginBean = userMapper.selectUserByOpenId(jsonObject.get("openid").toString());
+        if (ObjectUtil.isNotNull(_loginBean)) {
+            if (ObjectUtil.isNotNull(jsonObject.get("session_key"))) {
+                _loginBean.setSession_key(jsonObject.get("session_key").toString());
+            }
+            if (ObjectUtil.isNotNull(jsonObject.get("unionid"))) {
+                _loginBean.setUnionid(jsonObject.get("unionid").toString());
+            }
+            if (ObjectUtil.isNotNull(jsonObject.get("errcode"))) {
+                _loginBean.setErrcode(Long.parseLong(jsonObject.get("errcode").toString()));
+            }
+            if (ObjectUtil.isNotNull(jsonObject.get("errmsg"))) {
+                _loginBean.setErrmsg(jsonObject.get("errmsg").toString());
+            }
+            userMapper.updateUser(_loginBean);
+            CommonValue.sqlSession.commit();
+            return _loginBean;
         } else {
             LoginBean loginBean = new LoginBean();
             if (ObjectUtil.isNotNull(jsonObject.get("openid"))) {

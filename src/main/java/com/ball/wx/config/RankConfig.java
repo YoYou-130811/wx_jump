@@ -13,6 +13,10 @@ public class RankConfig {
     @Autowired
     RankService rankService;
 
+    /**
+     * 每天定时刷新排行榜
+     * @throws Exception
+     */
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
     public void refresh() throws Exception {
         log.info("更新排行榜");

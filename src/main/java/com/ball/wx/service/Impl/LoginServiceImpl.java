@@ -10,6 +10,7 @@ import com.ball.wx.service.LoginService;
 import com.ball.wx.util.HttpUtil;
 import com.ball.wx.util.ImgUtil;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -23,43 +24,17 @@ public class LoginServiceImpl implements LoginService {
         String url = CommonValue.GET_USER_DATA_URL_HEAD + result + CommonValue.GET_USER_DATA_URL_END;
         String data = HttpUtil.doPost(url, "");
         JSONObject jsonObject = JSONObject.parseObject(data);
-        LoginBean _loginBean = userMapper.selectUserByOpenId(jsonObject.get("openid").toString());
-        if (ObjectUtil.isNotNull(_loginBean)) {
-            if (ObjectUtil.isNotNull(jsonObject.get("session_key"))) {
-                _loginBean.setSession_key(jsonObject.get("session_key").toString());
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("unionid"))) {
-                _loginBean.setUnionid(jsonObject.get("unionid").toString());
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("errcode"))) {
-                _loginBean.setErrcode(Long.parseLong(jsonObject.get("errcode").toString()));
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("errmsg"))) {
-                _loginBean.setErrmsg(jsonObject.get("errmsg").toString());
-            }
+        LoginBean loginBean = userMapper.selectUserByOpenId(jsonObject.get("openid").toString());
+        if (ObjectUtil.isNotNull(loginBean)) {
+            LoginBean _loginBean = getLoginBean(loginBean, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
             userMapper.updateUser(_loginBean);
             CommonValue.sqlSession.commit();
             return _loginBean;
         } else {
-            LoginBean loginBean = new LoginBean();
-            if (ObjectUtil.isNotNull(jsonObject.get("openid"))) {
-                loginBean.setOpenid(jsonObject.get("openid").toString());
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("session_key"))) {
-                loginBean.setSession_key(jsonObject.get("session_key").toString());
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("unionid"))) {
-                loginBean.setUnionid(jsonObject.get("unionid").toString());
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("errcode"))) {
-                loginBean.setErrcode(Long.parseLong(jsonObject.get("errcode").toString()));
-            }
-            if (ObjectUtil.isNotNull(jsonObject.get("errmsg"))) {
-                loginBean.setErrmsg(jsonObject.get("errmsg").toString());
-            }
-            userMapper.insertUser(loginBean);
+            LoginBean _loginBean = getLoginBean(null, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
+            userMapper.insertUser(_loginBean);
             CommonValue.sqlSession.commit();
-            return loginBean;
+            return _loginBean;
         }
     }
 
@@ -89,6 +64,45 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void deleteAllUsers() throws Exception {
         userMapper.deleteAllUsers();
+    }
+
+    private LoginBean getLoginBean(LoginBean loginBean, String openid, String session_key, String unionid, Long errcode, String errmsg) {
+        if (ObjectUtil.isNotNull(loginBean)) {
+            if (!openid.equals("")) {
+                loginBean.setOpenid(openid);
+            }
+            if (!session_key.equals("")) {
+                loginBean.setSession_key(session_key);
+            }
+            if (!unionid.equals("")) {
+                loginBean.setUnionid(unionid);
+            }
+            if (!errcode.equals("")) {
+                loginBean.setErrcode(errcode);
+            }
+            if (!errmsg.equals("")) {
+                loginBean.setErrmsg(errmsg);
+            }
+            return loginBean;
+        } else {
+            LoginBean _loginBean = new LoginBean();
+            if (!openid.equals("")) {
+                loginBean.setOpenid(openid);
+            }
+            if (!session_key.equals("")) {
+                loginBean.setSession_key(session_key);
+            }
+            if (!unionid.equals("")) {
+                loginBean.setUnionid(unionid);
+            }
+            if (!errcode.equals("")) {
+                loginBean.setErrcode(errcode);
+            }
+            if (!errmsg.equals("")) {
+                loginBean.setErrmsg(errmsg);
+            }
+            return _loginBean;
+        }
     }
 
 }

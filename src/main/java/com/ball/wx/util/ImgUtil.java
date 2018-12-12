@@ -1,11 +1,14 @@
 package com.ball.wx.util;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+@Component
 public class ImgUtil {
 
     public static String downLoadImage(String imageUrl, String savePath,String imageName) throws Exception {

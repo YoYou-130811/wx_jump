@@ -1,6 +1,7 @@
 package com.ball.wx;
 
 import com.ball.wx.util.DBUtil;
+import com.ball.wx.util.RedisUtil;
 import org.apache.ibatis.session.SqlSession;
 
 public class CommonValue {

@@ -1,0 +1,34 @@
+Day1(2018.12.03):
+	1.	前端调用wx.login将获取的code发送给后端
+	2.	后端用code获取openid和session_key
+	3.	前端调用getUserInfo获取用户信息并将获取的信息发送到后端
+	4.	后端根据前端发送的rawData和之前的session_key算出signature
+	5.	将算出来的signature与前端发送的signature对比，如果一样表示数据完整
+	6.	数据完整即可进行登录
+	7.	进入下一个场景后，前端发送获取用户信息请求，获取头像(因为引擎无法直接加载网络图片，需要后端将图片保存在本地)
+
+Day2(2018.12.04):
+	1.	前端发送获取排行榜请求
+	2.	后端遍历所有用户分数，并把前10名取出来放入另一张表里（该动作每24小时自动执行一次）
+	3.	后端把排行榜表数据返回给前端
+	4.	前端发送改变最高分请求
+	5.	后端接收到改变最高分请求后，将前端发送的数据与数据库里的数据比较，如果比数据库里的分数高，则更新数据库
+	6.	微信小程序openid应该是唯一的，登录过程加了限制，这样避免同一个用户多次登录创建好几个用户数据
+	7.	将公共数据存放到了公共数据类里
+
+Day3(2018.12.05):
+	1.	笔记本设为centos服务器，并设置静态IP，台式机连上笔记本服务器
+	2.	windows下载pscp.exe，并把它加入环境变量中的Path中，即可实现windows传送文件到服务器
+	3.	idea打出jar包，把jar包传送到服务器上，服务器输入java -jar jar包名，即可启动项目
+	4.	centos安装数据库：
+				1.	wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+				2.	yum localinstall mysql57-community-release-el7-8.noarch.rpm
+				3.	service mysqld start(安装成功的前提下)
+				4.	grep 'temporary password' /var/log/mysqld.log(查看数据库初始密码)
+				5.	set password for 'root'@'localhost'=password('MyNewPass4!');(用初始密码成功登入数据库的前提下)
+				6.	之后便可对数据进行操作
+	进入数据库步骤：
+		1.	mysql -u 用户名 -p
+		2.	输入密码
+		ps:	用户名：root
+			密码：1qaz!QAZ

@@ -1,0 +1,5 @@
+1.	windows+R输入cmd
+2.	跳转至redis目录(此电脑为:D:/Redis)
+3.	cmd.exe输入redis-server.exe redis.windows.conf
+4.	重新开一个cmd
+5.	输入redis-cli.exe

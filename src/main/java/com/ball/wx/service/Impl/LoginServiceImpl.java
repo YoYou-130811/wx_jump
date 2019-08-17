@@ -26,12 +26,12 @@ public class LoginServiceImpl implements LoginService {
         JSONObject jsonObject = JSONObject.parseObject(data);
         LoginBean loginBean = userMapper.selectUserByOpenId(jsonObject.get("openid").toString());
         if (ObjectUtil.isNotNull(loginBean)) {
-            LoginBean _loginBean = getLoginBean(loginBean, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
+            LoginBean _loginBean = getLoginBean(loginBean, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), "", 0L, "");//jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
             userMapper.updateUser(_loginBean);
             CommonValue.sqlSession.commit();
             return _loginBean;
         } else {
-            LoginBean _loginBean = getLoginBean(null, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
+            LoginBean _loginBean = getLoginBean(null, jsonObject.get("openid").toString(), jsonObject.get("session_key").toString(), "", 0L, "");//jsonObject.get("unionid").toString(), Long.parseLong(jsonObject.get("errcode").toString()), jsonObject.get("errmsg").toString());
             userMapper.insertUser(_loginBean);
             CommonValue.sqlSession.commit();
             return _loginBean;

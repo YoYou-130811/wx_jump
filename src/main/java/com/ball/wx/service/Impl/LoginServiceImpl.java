@@ -9,8 +9,9 @@ import com.ball.wx.mapper.UserMapper;
 import com.ball.wx.service.LoginService;
 import com.ball.wx.util.HttpUtil;
 import com.ball.wx.util.ImgUtil;
+import com.ball.wx.util.RedisUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 @Service
 public class LoginServiceImpl implements LoginService {
